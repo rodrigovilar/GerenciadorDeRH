@@ -18,4 +18,4 @@ http://blip.tv/akitaonrails/screencast-come-ando-com-git-6074964
 
 ---------------------------------------------------------------------------
 
-Entrega do projeto: 02/07/2013
+Entrega do projeto: 02/07/2013 --
