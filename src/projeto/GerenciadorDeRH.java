@@ -16,8 +16,20 @@ public class GerenciadorDeRH {
 		listaFuncionarios.add(f);
 	}
 	
-	public boolean validaCaracteres(InformacaoPessoal info) { // Falta implementar
-		return info.getNome().matches("[A-Z a-z Çç]{" + info.getNome().length() + "}");
+	public boolean validaCampoDeTexto(String s) {
+		
+		boolean temp = true;
+		
+		for(int i=0;i<s.length();i++){
+			if(s.charAt(i)!=' ' && Character.isLetter(s.charAt(i))!=true){
+				temp = false;
+			}
+		}
+		
+		
+		return temp;
+		
+		//return s.matches("[A-Z a-z Çç]{" + s.length() + "}");
 	}
 
 	public void validaCadastro(InformacaoPessoal info)throws ValidaCadastroException {
@@ -26,11 +38,8 @@ public class GerenciadorDeRH {
 			throw new ValidaCadastroException("Funcionario existente com esse cpf!");
 		}
 		
-		if (validaCaracteres(info) != true) {
-			throw new ValidaCadastroException("Caracteres inválidos");
-		}
-		
-		/*A implementação desse método depende da outra sub validações
+				
+		/*A implementação desse método depende das outras sub validações
 		 * 
 		 * 
 		 * 
@@ -98,6 +107,15 @@ public class GerenciadorDeRH {
 				}
 			}
 		}
+		
+		if (cpf.equals("00000000000") || cpf.equals("11111111111") ||
+		        cpf.equals("22222222222") || cpf.equals("33333333333") ||
+		        cpf.equals("44444444444") || cpf.equals("55555555555") ||
+		        cpf.equals("66666666666") || cpf.equals("77777777777") ||
+		        cpf.equals("88888888888") || cpf.equals("99999999999") ||
+		        (cpf.length() != 11))
+		 temp = false;
+		
 		return temp;
 	}
 
@@ -105,7 +123,7 @@ public class GerenciadorDeRH {
 		
 		boolean temp = true;
 		
-		if(rg.length()>7||rg.length()<7){
+		if(rg.length()!=7){
 			return false;
 		}else{
 			for(int i =0;i<rg.length();i++){
@@ -114,6 +132,14 @@ public class GerenciadorDeRH {
 				}
 			}
 		}
+		
+		if (rg.equals("0000000") || rg.equals("1111111") ||
+				rg.equals("2222222") || rg.equals("3333333") ||
+				rg.equals("4444444") || rg.equals("5555555") ||
+				rg.equals("6666666") || rg.equals("7777777") ||
+				rg.equals("8888888") || rg.equals("9999999")) 
+				temp = false;
+		
 		
 		return temp;
 	}
