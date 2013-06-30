@@ -6,29 +6,20 @@ import java.util.List;
 public class GerenciadorDeRH {
 
 	private List<Funcionario> listaFuncionarios = new ArrayList<Funcionario>();
-
+	private int quantidadeFuncionarios = 0;
+	
+	
 	public boolean isEmpty() {
 		return listaFuncionarios.size() == 0;
 	}
-
-	public void contratarFuncionario(InformacaoPessoal info, int hierarquia) {//contratar funcionário
-		Funcionario f = new Funcionario(info, 0, hierarquia);
-		listaFuncionarios.add(f);
-	}
-	
 	public boolean validaCampoDeTexto(String s) {
-		
 		boolean temp = true;
-		
 		for(int i=0;i<s.length();i++){
 			if(s.charAt(i)!=' ' && Character.isLetter(s.charAt(i))!=true){
 				temp = false;
 			}
 		}
-		
-		
 		return temp;
-		
 		//return s.matches("[A-Z a-z Çç]{" + s.length() + "}");
 	}
 
@@ -58,22 +49,17 @@ public class GerenciadorDeRH {
 		return false;
 	}
 
-
 	public boolean validaEdicao(Funcionario f) {
 		return f.getHierarquia() == 1;
 	}
-
 	private String getCpfFuncionario(int pos) {
 		return listaFuncionarios.get(pos).getInfo().getCpf();
 	}
-
 	public Funcionario getFuncionario(int pos) {
 		return listaFuncionarios.get(pos);
 	}
 	public boolean validaDataNascimento(String dataNascimento){ //Validação de entrada do formato de Data
-																//Ainda precisa de melhoramentos
-		
-				
+						
 		if((dataNascimento.length()!=10)){
 			return false;
 		}else if((dataNascimento.charAt(2)!='/')||(dataNascimento.charAt(5))!='/'){
@@ -90,14 +76,12 @@ public class GerenciadorDeRH {
 			return false;
 		}
 		
-		
 		return true;
 	}
 
 	public boolean validaCPF(String cpf) {// Validação de formato CPF - "melhoramentos ainda"
 		
 		boolean temp = true;
-				
 		if(cpf.length()!=11){
 			temp = false;
 		}else{
@@ -114,13 +98,11 @@ public class GerenciadorDeRH {
 		        cpf.equals("66666666666") || cpf.equals("77777777777") ||
 		        cpf.equals("88888888888") || cpf.equals("99999999999") ||
 		        (cpf.length() != 11))
-		 temp = false;
-		
+		temp = false;
 		return temp;
 	}
 
 	public boolean validaRG(String rg) { //Validação de formato RG - "melhoramentos ainda"
-		
 		boolean temp = true;
 		
 		if(rg.length()!=7){
@@ -139,9 +121,29 @@ public class GerenciadorDeRH {
 				rg.equals("6666666") || rg.equals("7777777") ||
 				rg.equals("8888888") || rg.equals("9999999")) 
 				temp = false;
-		
-		
+				
 		return temp;
 	}
-
+	public boolean verificarExistenciaFuncionario(Funcionario funcionario) {
+		boolean temp = false;
+		
+		if(isEmpty()==true){
+			temp = false;
+			return temp;
+		}else{
+			for(int i = 0 ; i<listaFuncionarios.size();i++){
+				if(funcionario.equals(listaFuncionarios.get(i))){
+					temp = true;
+				}}
+		}
+		return temp; //incluir exce��o nesse m�todo -----------
+	}
+	public void demitirFuncionario(Funcionario f){
+		verificarExistenciaFuncionario(f);
+		listaFuncionarios.remove(f);
+	}
+	public void contratarFuncionario(InformacaoPessoal info, int hierarquia) {//contratar funcionário
+		Funcionario f = new Funcionario(info, 0, hierarquia);
+		listaFuncionarios.add(f);
+	}
 }
