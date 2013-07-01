@@ -58,6 +58,4 @@ public class InformacaoPessoal {
 		this.nome = nome;
 	}
 
-
 }
-
