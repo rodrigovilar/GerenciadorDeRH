@@ -16,6 +16,13 @@ A entrega será me enviando o link do repositório por email até 30/06.
 Link da vídeo aula de Git:
 http://blip.tv/akitaonrails/screencast-come-ando-com-git-6074964
 
+--------------------------------------------------------------------------
+
+Equipe: Erivaldo Barbosa
+	Luan Luna
+	Robson Soares De Lima
+
+
 ---------------------------------------------------------------------------
 
 Entrega do projeto: 02/07/2013 --

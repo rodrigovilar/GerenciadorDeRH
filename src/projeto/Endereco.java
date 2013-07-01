@@ -9,13 +9,11 @@ public class Endereco {
 	private int numeroCasaOuApartamento;
 
 	public Endereco(String rua, String telefone, String bairro, String apartamento, int numeroCasa){
-
 		this.rua = rua;
 		this.telefone = telefone;
 		this.bairro = bairro;
 		this.apartamento = apartamento;
 		this.numeroCasaOuApartamento = numeroCasa;
-
 	}
 
 	public String getRua() {
@@ -48,6 +46,5 @@ public class Endereco {
 	public void setNumeroCasaOuApartamento(int numeroCasaOuApartamento) {
 		this.numeroCasaOuApartamento = numeroCasaOuApartamento;
 	}
-
-
 }
+

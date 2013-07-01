@@ -8,7 +8,6 @@ public class InformacaoPessoal {
 	private String identidade;
 	private String cpf;
 
-
 	public InformacaoPessoal(String nome, String cpf, String data,String identidade, Endereco endereco){
 		this.nome = nome;
 		this.cpf = cpf;
@@ -59,4 +58,6 @@ public class InformacaoPessoal {
 		this.nome = nome;
 	}
 
+
 }
+
