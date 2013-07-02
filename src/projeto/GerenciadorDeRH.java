@@ -1,9 +1,10 @@
 package projeto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GerenciadorDeRH {
+public class GerenciadorDeRH implements Serializable{
 
 	private List<Funcionario> listaFuncionarios = new ArrayList<Funcionario>();
 	private int quantidadeFuncionarios = 0;
@@ -136,14 +137,14 @@ public class GerenciadorDeRH {
 					temp = true;
 				}}
 		}
-		return temp; //incluir exceção nesse método -----------
+		return temp; //incluir exceï¿½ï¿½o nesse mï¿½todo -----------
 	}
 	public void demitirFuncionario(Funcionario f){
 		verificarExistenciaFuncionario(f);
 		listaFuncionarios.remove(f);
 	}
 	public void contratarFuncionario(InformacaoPessoal info, int hierarquia) {//contratar funcionÃ¡rio
-		Funcionario f = new Funcionario(info, 0, hierarquia);
+		Funcionario f = new Funcionario(info, 0, hierarquia,"");
 		listaFuncionarios.add(f);
 	}
 }

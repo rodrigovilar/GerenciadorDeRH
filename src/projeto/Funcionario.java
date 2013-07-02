@@ -1,6 +1,8 @@
 package projeto;
 
-public class Funcionario {
+import java.io.Serializable;
+
+public class Funcionario implements Serializable{
 
 	private double salario;
 	private int horasTrabalhadas, horasATrabalhar;

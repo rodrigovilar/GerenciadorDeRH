@@ -1,6 +1,8 @@
 package projeto;
 
-public class InformacaoPessoal {
+import java.io.Serializable;
+
+public class InformacaoPessoal implements Serializable{
 
 	private String nome;
 	private Endereco endereco;
