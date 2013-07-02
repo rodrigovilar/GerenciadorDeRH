@@ -14,7 +14,6 @@ public class FolhaDePagamento implements Serializable{
 		GregorianCalendar calendar = new GregorianCalendar();
 		data = calendar.get(GregorianCalendar.MONTH)+"/"+calendar.get(GregorianCalendar.YEAR);
 		folha = gerarFolha(funcionarios);
-		System.out.println(folha);
 		
 	}
 	
