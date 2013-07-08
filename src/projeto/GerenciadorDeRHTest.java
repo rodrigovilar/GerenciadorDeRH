@@ -7,98 +7,217 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class GerenciadorDeRHTest {
-	
-	
+		
 	private GerenciadorDeRH gerenciador;
-	
+	Funcionario funcionario;
+	ContraCheque contraCheque;
+	validacaoDeEntradas validacao;
+	 
+		
 	@Before
 	public void criarGerenciador() {
 		gerenciador = new GerenciadorDeRH();
+		Endereco endereco = new Endereco("rua do coisa", "3229-1475", "centro", "04", 25);
+		InformacaoPessoal informacaoPessoal = new InformacaoPessoal("Fulano da silva", 
+				"09347099473", "28/07/1993","3626097", endereco);	
+		funcionario = new Funcionario(informacaoPessoal, 01, 3, "gerente");
+		funcionario.setHorasATrabalhar(30);
+		funcionario.setHorasTrabalhadas(25);
+		contraCheque = new ContraCheque(funcionario);
+		validacao = new validacaoDeEntradas();
+		
 	}
+	
+	private InformacaoPessoal criarInformacoes1(){ 
+		Endereco endereco = new Endereco("Rua Brasil", "884577755", "Jardiam Silvas", "27", 566);
+		InformacaoPessoal info = new InformacaoPessoal("Robson", "08446924475", "20/04/1989","2478965", endereco);
+		return info;
+	}
+	
+	private InformacaoPessoal criarInformacoes2(){
+		Endereco endereco = new Endereco("Rua Jornal Alagoas", "884577755", "Jardim Olivera", "27", 565);
+		InformacaoPessoal info = new InformacaoPessoal("Robson", "08446924475", "20/04/1989","2478965", endereco);
+		return info;
+	}
+	
+	private Funcionario criarFuncionarioNivel1(){ //Funcionï¿½rio de teste nï¿½vel 1
+		InformacaoPessoal info = criarInformacoes1();
+		Funcionario funcionario = new Funcionario(info, 001, 1, "Gerente");
+		
+		
+		return funcionario;
+	}
+	
+	private Funcionario criarFuncionarioNivel2(){ //Funcionï¿½rio de teste nï¿½vel 2
+		InformacaoPessoal info = criarInformacoes2();
+		Funcionario funcionario = new Funcionario(info, 002, 2, "Atendente");
+		return funcionario;
+	}
+	//------------------------contra cheque -----------------------------------------------------------
+	@Test(expected=FuncionarioNullExeption.class)
+	public void arrayDeFuncionariosNull(){ 
+		FolhaDePagamento folha = new FolhaDePagamento(null);
+	}
+	
+	@Test(expected=FuncionarioNullExeption.class)
+	public void funcionarioNull(){
+		ContraCheque contraChequeTeste = new ContraCheque(null);
+	}
+	
 	@Test
-	public void validarListaFuncionariosVazia(){
-		InformacaoPessoal info = new InformacaoPessoal("Robson", "123");
-		gerenciador.validaCadastro(info);
+	public void testEmitirContracheque(){
+		Assert.assertTrue(contraCheque.emitirContraCheque() != null);
 	}
+	
+	@Test
+	public void testeGerarDesconto(){
+		funcionario.setSalario(2079.51);
+		contraCheque.gerarDescontos();
+		Assert.assertEquals(contraCheque.getDescontos(), 366.0167);
+
+	}
+	
+	@Test
+	public void testGerarDescontoPorHoraPerdida(){//verifica o valor retornado do metodo descontoPorHoraNaoTrabalhada()	
+		Assert.assertEquals(contraCheque.descontoPorHoraNaoTrabalhada(),12,50);
+	}
+	
+	@Test
+	public void testeDescontoINSS() {//verifica o valor de retorno do metodo gerarDescontoDeINSS
+		funcionario.setSalario(1147.70);
+		Assert.assertEquals(contraCheque.gerarDescontoDeINSS(),91,82);	
+		funcionario.setSalario(1247.71);
+		Assert.assertEquals(contraCheque.gerarDescontoDeINSS(),112.2939);
+		funcionario.setSalario(2079.51);
+		Assert.assertEquals(contraCheque.gerarDescontoDeINSS(),228.7461);
+	}
+	
+	@Test
+	public void testeDescontoValeTransporte(){//verifica o valor de retorno do metodo gerarDescontoValeTransporte
+		funcionario.setSalario(780);
+		
+		Assert.assertEquals(contraCheque.gerarDescontoValeTransporte(),46.80);	
+		funcionario.setSalario(2079.51);
+		
+		Assert.assertEquals(contraCheque.gerarDescontoValeTransporte(),124,7706);
+	}
+	//-----------------------------------------------------------------------------------------------
+	
 	@Test  
-	public void validarListaFuncionariosComDados(){ //validação de entrada de dados
-		InformacaoPessoal f = new InformacaoPessoal("Robson", "123");
-		gerenciador.validaCadastro(f);
-		gerenciador.contratarFuncionario(f,1);
-		InformacaoPessoal g = new InformacaoPessoal("Robson", "122");
-		gerenciador.validaCadastro(g);
-		gerenciador.contratarFuncionario(g,2);
+	public void verificarCPFExistente(){ 
+		InformacaoPessoal f = criarInformacoes1();
+		gerenciador.contratarFuncionario(f, 1, 001,"Gerente");
+		InformacaoPessoal g = criarInformacoes2();
+		
+		Assert.assertFalse("Esperava autorizaï¿½ï¿½o negada", gerenciador.vericarCpfExistente(g));
 	}
+	
 	@Test
-	public void validaEdicao(){ //Validação de autorização somente funcionário nível "1"
-		InformacaoPessoal f = new InformacaoPessoal("Robson", "123");
-		gerenciador.validaCadastro(f);
-		gerenciador.contratarFuncionario(f,1);
-		InformacaoPessoal g = new InformacaoPessoal("Robson", "122");
-		gerenciador.validaCadastro(g);
-		gerenciador.contratarFuncionario(g,2);
-		Assert.assertTrue("Esperava autorização", gerenciador.validaEdicao(gerenciador.getFuncionario(0)));
-		Assert.assertFalse("Esperava autorização negada", gerenciador.validaEdicao(gerenciador.getFuncionario(1)));
-				
-	}
-	@Test
-	public void validaDataDeNascimento(){//Validações do formato correto de data
-		Assert.assertTrue("Esperava data válida", gerenciador.validaDataNascimento("15/02/2002"));
-		Assert.assertFalse("Esperava data inválida ano",gerenciador.validaDataNascimento("10/02/20001"));
-		Assert.assertFalse("Esperava data invalida(sem barra)",gerenciador.validaDataNascimento("10/0220001"));
-		Assert.assertFalse("Esperava data invalida(sem barra)",gerenciador.validaDataNascimento("1002/20001"));
-		Assert.assertFalse("Esperava data invalida(espaÃ§o)",gerenciador.validaDataNascimento(" "));
-		Assert.assertFalse("Esperava data invalida(letras)",gerenciador.validaDataNascimento("aa/bb/bbbb"));
-	}
-	@Test
-	public void validaCPF(){
-		Assert.assertTrue("Esperava CPF válido",gerenciador.validaCPF("08446924475"));
-		Assert.assertFalse("Esperava CPF inválido(menor)",gerenciador.validaCPF("34825"));
-		Assert.assertFalse("Esperava CPF inválido(maior)",gerenciador.validaCPF("3482592555454"));
-		Assert.assertFalse("Esperava CPF inválido(letras)",gerenciador.validaCPF("ahsfehrgdtr"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("00000000000"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("11111111111"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("22222222222"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("33333333333"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("44444444444"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("55555555555"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("66666666666"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("77777777777"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("88888888888"));
-		Assert.assertFalse("Esperava CPF inválido(repetidos)",gerenciador.validaCPF("99999999999"));
-	}
-	@Test
-	public void validaRG(){
-		Assert.assertTrue("Esperava RG válido",gerenciador.validaRG("2478965"));
-		Assert.assertFalse("Esperava RG inválido(maior)",gerenciador.validaRG("247896546"));
-		Assert.assertFalse("Esperava RG inválido(menor)",gerenciador.validaRG("24789"));
-		Assert.assertFalse("Esperava RG inválido (letras)",gerenciador.validaRG("ahshehs"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("0000000"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("1111111"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("2222222"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("3333333"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("4444444"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("5555555"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("6666666"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("7777777"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("8888888"));
-		Assert.assertFalse("Esperava RG inválido(repetidos)",gerenciador.validaCPF("9999999"));
-	}
-	@Test
-	public void validaCampoDeTexto(){
-		Assert.assertTrue("Esperava Dado válido",gerenciador.validaCampoDeTexto("Robson"));
-		Assert.assertTrue("Esperava Dado inválido(EspaÃ§o)",gerenciador.validaCampoDeTexto("Robson Soares De Lima"));
-		Assert.assertFalse("Esperava Dado inválido(caracteres especiais)",gerenciador.validaCampoDeTexto("{Robson - Soares}"));
-		Assert.assertFalse("Esperava Dado inválido(nÃºmeros)",gerenciador.validaCampoDeTexto("1452368222"));
+	public void validaEdicao(){ //Validaï¿½ï¿½o de autorizaï¿½ï¿½o somente funcionï¿½rio nï¿½vel "1"
+		Funcionario f = criarFuncionarioNivel1();
+		Funcionario g = criarFuncionarioNivel2();
+		
+		Assert.assertTrue("Esperava autorizaï¿½ï¿½o", gerenciador.validaEdicao(f));
+		Assert.assertFalse("Esperava autorizaï¿½ï¿½o negada", gerenciador.validaEdicao(g));
 	}
 	
 	@Test
 	public void funcionarioExiste(){
-		InformacaoPessoal f = new InformacaoPessoal("Robson", "123");
-		gerenciador.validaCadastro(f);
-		gerenciador.contratarFuncionario(f,1);
-		Assert.assertTrue("Esperava um funcionário cadastrado", gerenciador.verificarExistenciaFuncionario(gerenciador.getFuncionario(0)));
+		InformacaoPessoal f = criarInformacoes1();
+		gerenciador.contratarFuncionario(f,1,001,"Gerente");
+		Funcionario g = gerenciador.getFuncionario(0);
 				
 	}
-
+	
+	@Test
+	public void editarCargo(){
+		InformacaoPessoal f = criarInformacoes1();
+		gerenciador.contratarFuncionario(f,001,1,"Gerente");
+		InformacaoPessoal g = criarInformacoes1();
+		gerenciador.contratarFuncionario(g,002,2,"Caixa");
+		
+		Assert.assertTrue("Esperava cargo editado",gerenciador.editarCargo(001,002,"Auxiliar Admistrativo"));
+		Assert.assertFalse("Esperava ediï¿½ï¿½o de cargo negada",gerenciador.editarCargo(001,001,"Auxiliar Admistrativo"));
+	}
+	
+	@Test
+	public void editarSalario(){
+		InformacaoPessoal f = criarInformacoes1();
+		gerenciador.contratarFuncionario(f,001,1,"Gerente");
+		InformacaoPessoal g = criarInformacoes1();
+		gerenciador.contratarFuncionario(g,002,2,"Caixa");
+		
+		Assert.assertTrue("Esperava salario editado",gerenciador.editarSalario(001,002,200));
+		Assert.assertFalse("Esperava ediï¿½ï¿½o de salario negada",gerenciador.editarSalario(001,001,200));
+		
+	}
+	
+	@Test
+	public void editarHierarquia(){
+		InformacaoPessoal f = criarInformacoes1();
+		gerenciador.contratarFuncionario(f,001,1,"Gerente");
+		InformacaoPessoal g = criarInformacoes1();
+		gerenciador.contratarFuncionario(g,002,2,"Caixa");
+		
+		Assert.assertTrue("Esperava salario editado",gerenciador.editarHierarquia(001,002,2));
+		Assert.assertFalse("Esperava ediï¿½ï¿½o de salario negada",gerenciador.editarHierarquia(001,001,2));
+		
+	}
+	  
+	@Test
+	public void validaDataDeNascimento(){//Validaï¿½ï¿½es do formato correto de data
+		Assert.assertTrue("Esperava data vï¿½lida", validacao.validaDataNascimento("15/02/2002"));
+		
+		Assert.assertFalse("Esperava data invï¿½lida ano",validacao.validaDataNascimento("10/02/20001"));
+		Assert.assertFalse("Esperava data invalida(sem barra)",validacao.validaDataNascimento("10/0220001"));
+		Assert.assertFalse("Esperava data invalida(sem barra)",validacao.validaDataNascimento("1002/20001"));
+		Assert.assertFalse("Esperava data invalida(espaÃ§o)",validacao.validaDataNascimento(" "));
+		Assert.assertFalse("Esperava data invalida(letras)",validacao.validaDataNascimento("aa/bb/bbbb"));
+	}
+	
+	@Test
+	public void validaCPF(){
+		Assert.assertTrue("Esperava CPF vï¿½lido",validacao.validaCPF("08446924475"));
+		
+		Assert.assertFalse("Esperava CPF invï¿½lido(menor)",validacao.validaCPF("34825"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(maior)",validacao.validaCPF("3482592555454"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(letras)",validacao.validaCPF("ahsfehrgdtr"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("00000000000"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("11111111111"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("22222222222"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("33333333333"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("44444444444"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("55555555555"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("66666666666"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("77777777777"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("88888888888"));
+		Assert.assertFalse("Esperava CPF invï¿½lido(repetidos)",validacao.validaCPF("99999999999"));
+	}
+	
+	@Test
+	public void validaRG(){
+		Assert.assertTrue("Esperava RG vï¿½lido",validacao.validaRG("2478965"));
+		Assert.assertFalse("Esperava RG invï¿½lido(maior)",validacao.validaRG("247896546"));
+		Assert.assertFalse("Esperava RG invï¿½lido(menor)",validacao.validaRG("24789"));
+		Assert.assertFalse("Esperava RG invï¿½lido (letras)",validacao.validaRG("ahshehs"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("0000000"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("1111111"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("2222222"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("3333333"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("4444444"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("5555555"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("6666666"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("7777777"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("8888888"));
+		Assert.assertFalse("Esperava RG invï¿½lido(repetidos)",validacao.validaCPF("9999999"));
+	}
+	
+	@Test
+	public void validaCampoDeTexto(){
+		Assert.assertTrue("Esperava Dado vï¿½lido",gerenciador.validaCampoDeTexto("Robson"));
+		Assert.assertTrue("Esperava Dado invï¿½lido(EspaÃ§o)",gerenciador.validaCampoDeTexto("Robson Soares De Lima"));
+		Assert.assertFalse("Esperava Dado invï¿½lido(caracteres especiais)",gerenciador.validaCampoDeTexto("{Robson - Soares}"));
+		Assert.assertFalse("Esperava Dado invï¿½lido(nÃºmeros)",gerenciador.validaCampoDeTexto("1452368222"));
+	}
+	
 }

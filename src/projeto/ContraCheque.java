@@ -6,7 +6,7 @@ public class ContraCheque {
 	private Funcionario funcionario;
 	private double valeTransporte, INSS, descontos, horasNaoTrabalhadas, descontoPorHoraNaoTrabalhada;
 	
-	public ContraCheque(Funcionario funcionario) throws FuncionarioNullExeption{
+	public ContraCheque(Funcionario funcionario) throws FuncionarioNullExeption{//construtor
 		if(funcionario != null){			
 			this.funcionario = funcionario;
 			horasNaoTrabalhadas = this.funcionario.getHorasATrabalhar()-this.funcionario.getHorasTrabalhadas();
@@ -27,14 +27,14 @@ public class ContraCheque {
 
 	private String toStringContraCheque() {
 		GregorianCalendar calendar = new GregorianCalendar();  
-		return "\n Contracheque referente ao mês "+calendar.get(GregorianCalendar.MONTH)+"/"+calendar.get(GregorianCalendar.YEAR)+
+		return "\n Contracheque referente ao m�s "+calendar.get(GregorianCalendar.MONTH)+"/"+calendar.get(GregorianCalendar.YEAR)+
 				
-						"\n\nInformações pessoais>>>"+
+						"\n\nInforma��es pessoais>>>"+
 						"\n\t\tFuncionario: "+funcionario.getInfo().getNome()+
 						"\n\t\tCPF: "+funcionario.getInfo().getCpf()+
 						"\n\t\tData de Nascimento: "+funcionario.getInfo().getDataDeNascimento()+
 						
-						"\n\nInformações individuais>>>"+
+						"\n\nInforma��es individuais>>>"+
 						"\n\t\tId: "+funcionario.getId()+
 						"\n\t\tCargo: "+funcionario.getCargo()+
 						"\n\t\tHoras trabalhadas: "+funcionario.getHorasTrabalhadas()+
@@ -42,10 +42,10 @@ public class ContraCheque {
 						"\n\nDescontos>>>"+
 						"\n\t\tVale transporte: "+this.gerarDescontoValeTransporte()+
 						"\n\t\tINSS: "+this.gerarDescontoDeINSS()+
-						"\n\t\tHoras não trabalhadas: "+this.descontoPorHoraNaoTrabalhada()+
+						"\n\t\tHoras n�o trabalhadas: "+this.descontoPorHoraNaoTrabalhada()+
 						"\n\t\tTotal de descontos: "+this.getDescontos()+
 						
-						"\n\nSalário:>>>"+
+						"\n\nSal�rio:>>>"+
 						"\n\t\tTotal: "+funcionario.getSalario()+
 						"\n\t\tCom descontos: "+(funcionario.getSalario()-this.descontos);
 	}
@@ -63,7 +63,7 @@ public class ContraCheque {
 		return horasNaoTrabalhadas * valorDescontadoPorHora;
 	}
 	
-	public double gerarDescontoDeINSS(){//Gera o desconto do INSS com base no salário do funcionário
+	public double gerarDescontoDeINSS(){//Gera o desconto do INSS com base no sal�rio do funcion�rio
 		double porcentagemDeDesconto;
 		double salario = funcionario.getSalario();
 		
@@ -76,7 +76,7 @@ public class ContraCheque {
 		return (porcentagemDeDesconto / 100.0) * salario;
 	}
 	
-	public double gerarDescontoValeTransporte() {//Gera o desconto de vale transporte com base no salário do funcionário 
+	public double gerarDescontoValeTransporte() {//Gera o desconto de vale transporte com base no sal�rio do funcion�rio 
 		double porcentagemDescontoValeTransporte = 6.0;
 		return (porcentagemDescontoValeTransporte / 100.0)*funcionario.getSalario();
 	}

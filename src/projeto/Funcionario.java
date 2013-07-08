@@ -1,6 +1,8 @@
 package projeto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Funcionario implements Serializable{
 
@@ -10,8 +12,12 @@ public class Funcionario implements Serializable{
 	private int hierarquia;
 	private int id;
 	private String cargo;
+	private ArrayList<ContraCheque> contracheques = new ArrayList<>();
 
 
+	public ArrayList<ContraCheque> getContracheques() {
+		return contracheques;
+	}
 	public Funcionario(InformacaoPessoal info, int id, int hierarquia, String cargo){
 		this.info = info;
 		this.id = id;
