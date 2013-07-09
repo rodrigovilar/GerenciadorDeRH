@@ -3,7 +3,7 @@ package projeto;
 import java.io.Serializable;
 
 public class InformacaoPessoal implements Serializable{//Classe usada para o cadastro de funcionários, fazendo ultilização de suas informações pessoais
-	//----------------------------------------------------------Atributos
+	//------------------------------------------------------------Atributos
 	private String nome;
 	private Endereco endereco;
 	private String dataDeNascimento;
