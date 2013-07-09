@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Funcionario implements Serializable{
-	//---------------------------------------------------Atributos
+	//-------------------------------------------------------------Atributos
 	private double salario;
 	private int horasTrabalhadas, horasATrabalhar;
 	private InformacaoPessoal info;
@@ -17,14 +17,14 @@ public class Funcionario implements Serializable{
 
 
 	
-	public Funcionario(InformacaoPessoal info, int id, int hierarquia, String cargo){
+	public Funcionario(InformacaoPessoal info, int id, int hierarquia, String cargo){//construtor
 		this.info = info;
 		this.id = id;
 		this.hierarquia = hierarquia;
 		this.cargo = cargo;
 	}
 	
-	//----------------------------------------------------------------Getters e Setters
+	//-------------------------------------------------------------------Getters e Setters
 	public ArrayList<ContraCheque> getContracheques() {
 		return contracheques;
 	}
