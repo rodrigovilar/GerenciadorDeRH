@@ -14,7 +14,7 @@ public class GerenciadorDeRH implements Serializable {
 		return listaFuncionarios.size() == 0;
 	}
 
-	public boolean validaCampoDeTexto(String s) {
+	public boolean validaCampoDeTexto(String s) { //Verificar se a informação recebida não possui caracteres especiais
 		boolean temp = true;
 		for (int i = 0; i < s.length(); i++) {
 			if (s.charAt(i) != ' ' && Character.isLetter(s.charAt(i)) != true) {
@@ -24,7 +24,7 @@ public class GerenciadorDeRH implements Serializable {
 		return temp;
 	}
 
-	public boolean vericarCpfExistente(InformacaoPessoal info) {
+	public boolean vericarCpfExistente(InformacaoPessoal info) { //Verificar CPF já cadastrado
 		if (isEmpty() == false) {
 			for (int i = 0; i < listaFuncionarios.size(); i++) {
 				if (getCpfFuncionario(i).equals(info.getCpf())) {
@@ -35,15 +35,15 @@ public class GerenciadorDeRH implements Serializable {
 		return true;
 	}
 
-	public boolean validaEdicao(Funcionario f) {
+	public boolean validaEdicao(Funcionario f) {//Verificar se funcionário tem nível hierarquico para edição
 		return f.getHierarquia() == 1;
 	}
 
-	private String getCpfFuncionario(int pos) {
+	private String getCpfFuncionario(int pos) { 
 		return listaFuncionarios.get(pos).getInfo().getCpf();
 	}
 
-	public Funcionario getFuncionario(int pos) throws RuntimeException {
+	public Funcionario getFuncionario(int pos) throws RuntimeException { //Retornar funcionário na posição informada
 		if (listaFuncionarios.isEmpty() == true) {
 			throw new CadastroFuncionarioException(
 					"Nenhum funcionario cadastrado!");
@@ -55,7 +55,7 @@ public class GerenciadorDeRH implements Serializable {
 		return listaFuncionarios.get(pos);
 	}
 
-	public boolean verificarExistenciaFuncionario(Funcionario funcionario) {
+	public boolean verificarExistenciaFuncionario(Funcionario funcionario) { //Verifica existência de funcionário
 		boolean temp = true;
 
 		if (isEmpty() == false) {
@@ -70,7 +70,7 @@ public class GerenciadorDeRH implements Serializable {
 		return temp;
 	}
 
-	public void demitirFuncionario(Funcionario f) {
+	public void demitirFuncionario(Funcionario f) { //demissão de funcionário
 		verificarExistenciaFuncionario(f);
 		listaFuncionarios.remove(f);
 	}
@@ -81,7 +81,7 @@ public class GerenciadorDeRH implements Serializable {
 		listaFuncionarios.add(f);
 	}
 
-	public boolean editarCargo(int id, int idF, String cargo) {//adicionada----------------------------
+	public boolean editarCargo(int id, int idF, String cargo) { //edição de cargo
 		if (id == idF) {
 			return false;
 		} else if (validaEdicao(buscaFuncionarioID(id)) == true) {
@@ -95,7 +95,7 @@ public class GerenciadorDeRH implements Serializable {
 		return false;
 	}
 
-	public Funcionario buscaFuncionarioID(int id) { //adicionada-----------------------
+	public Funcionario buscaFuncionarioID(int id) { //busca de funcionário
 		Funcionario temp = null;
 		if (isEmpty() != true) {
 			for (int i = 0; i < listaFuncionarios.size(); i++) {
@@ -106,7 +106,7 @@ public class GerenciadorDeRH implements Serializable {
 		}
 		return temp;
 	}
-	public boolean editarSalario(int id, int idF, double salario){//adicionada-----------------------
+	public boolean editarSalario(int id, int idF, double salario){//edição de salário
 		if (id == idF) {
 			return false;
 		} else if (validaEdicao(buscaFuncionarioID(id)) == true) {
@@ -120,7 +120,7 @@ public class GerenciadorDeRH implements Serializable {
 		return false;
 	}
 
-	public boolean editarHierarquia(int id, int idF, int hierarquia) {//adicionada---------------------
+	public boolean editarHierarquia(int id, int idF, int hierarquia) { //edição de hierarquia
 		if (id == idF) {
 			return false;
 		} else if (validaEdicao(buscaFuncionarioID(id)) == true) {
