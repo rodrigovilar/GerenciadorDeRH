@@ -29,18 +29,18 @@ public class GerenciadorDeRHTest {
 		
 	}
 	
-	private Endereco criarEnderecoPadrao(){
+	private Endereco criarEnderecoPadrao(){//Criação de endereço para testes
 		Endereco endereco = new Endereco("R. Aurora", "87651556", "Centro", "Condomínio Rio Tinto", 4);
 		return endereco;
 	}
 	
-	private InformacaoPessoal criarInformacoes1(){ 
+	private InformacaoPessoal criarInformacoes1(){ //Criação de informações
 		Endereco endereco = new Endereco("Rua Brasil", "884577755", "Jardiam Silvas", "27", 566);
 		InformacaoPessoal info = new InformacaoPessoal("Robson", "08446924475", "20/04/1989","2478965", endereco);
 		return info;
 	}
 	
-	private InformacaoPessoal criarInformacoes2(){
+	private InformacaoPessoal criarInformacoes2(){//Criação de informações
 		Endereco endereco = new Endereco("Rua Jornal Alagoas", "884577755", "Jardim Olivera", "27", 565);
 		InformacaoPessoal info = new InformacaoPessoal("Robson", "08446924475", "20/04/1989","2478965", endereco);
 		return info;
@@ -175,7 +175,7 @@ public class GerenciadorDeRHTest {
 	//----------------------------Gerenciador de RH-------------------------------------------------------------------
 	
 	@Test  
-	public void verificarCPFExistente(){ 
+	public void verificarCPFExistente(){ //Verificação de CPF cadastrado
 		InformacaoPessoal f = criarInformacoes1();
 		gerenciador.contratarFuncionario(f, 1, 001,"Gerente");
 		InformacaoPessoal g = criarInformacoes2();
@@ -193,7 +193,7 @@ public class GerenciadorDeRHTest {
 	}
 	
 	@Test
-	public void funcionarioExiste(){
+	public void funcionarioExiste(){ //verificação de cadastro de funcionário
 		InformacaoPessoal f = criarInformacoes1();
 		gerenciador.contratarFuncionario(f,1,001,"Gerente");
 		Funcionario g = gerenciador.getFuncionario(0);
@@ -201,7 +201,7 @@ public class GerenciadorDeRHTest {
 	}
 	
 	@Test
-	public void editarCargo(){
+	public void editarCargo(){//verificação de edição de cargo somente por funcionario hierarquia 1
 		InformacaoPessoal f = criarInformacoes1();
 		gerenciador.contratarFuncionario(f,001,1,"Gerente");
 		InformacaoPessoal g = criarInformacoes1();
@@ -212,7 +212,7 @@ public class GerenciadorDeRHTest {
 	}
 	
 	@Test
-	public void editarSalario(){
+	public void editarSalario(){ //Edição de salário somente por funcionario hierarquia 1
 		InformacaoPessoal f = criarInformacoes1();
 		gerenciador.contratarFuncionario(f,001,1,"Gerente");
 		InformacaoPessoal g = criarInformacoes1();
@@ -224,7 +224,7 @@ public class GerenciadorDeRHTest {
 	}
 	
 	@Test
-	public void editarHierarquia(){
+	public void editarHierarquia(){ //Edição de hierarquia
 		InformacaoPessoal f = criarInformacoes1();
 		gerenciador.contratarFuncionario(f,001,1,"Gerente");
 		InformacaoPessoal g = criarInformacoes1();
@@ -236,7 +236,7 @@ public class GerenciadorDeRHTest {
 	}
 	  
 	@Test
-	public void validaDataDeNascimento(){//Valida��es do formato correto de data
+	public void validaDataDeNascimento(){//Valida��es de entrada do formato de data (dd/mm/aaaa)
 		Assert.assertTrue("Esperava data v�lida", validacao.validaDataNascimento("15/02/2002"));
 		
 		Assert.assertFalse("Esperava data inv�lida ano",validacao.validaDataNascimento("10/02/20001"));
@@ -247,7 +247,7 @@ public class GerenciadorDeRHTest {
 	}
 	
 	@Test
-	public void validaCPF(){
+	public void validaCPF(){ //Validação de entrada de dados (CPF)
 		Assert.assertTrue("Esperava CPF v�lido",validacao.validaCPF("08446924475"));
 		
 		Assert.assertFalse("Esperava CPF inv�lido(menor)",validacao.validaCPF("34825"));
@@ -266,7 +266,7 @@ public class GerenciadorDeRHTest {
 	}
 	
 	@Test
-	public void validaRG(){
+	public void validaRG(){ //Validação entrada de dados (RG)
 		Assert.assertTrue("Esperava RG v�lido",validacao.validaRG("2478965"));
 		Assert.assertFalse("Esperava RG inv�lido(maior)",validacao.validaRG("247896546"));
 		Assert.assertFalse("Esperava RG inv�lido(menor)",validacao.validaRG("24789"));
@@ -284,7 +284,7 @@ public class GerenciadorDeRHTest {
 	}
 	
 	@Test
-	public void validaCampoDeTexto(){
+	public void validaCampoDeTexto(){//Validação de entrada de dados, somente texto
 		Assert.assertTrue("Esperava Dado v�lido",gerenciador.validaCampoDeTexto("Robson"));
 		Assert.assertTrue("Esperava Dado inv�lido(Espaço)",gerenciador.validaCampoDeTexto("Robson Soares De Lima"));
 		Assert.assertFalse("Esperava Dado inv�lido(caracteres especiais)",gerenciador.validaCampoDeTexto("{Robson - Soares}"));
